@@ -1,0 +1,39 @@
+
+---
+- name: add users and groups
+  hosts: all
+  user: root
+  tasks:
+
+  - name: add groups
+    group:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - devops
+    - networking
+    - developers
+    - engineers
+
+  - name: add user Abhi
+    user:
+      name: vishal
+      state: present
+      groups:
+      - devops
+      - developers
+
+  - name: add user Vishal
+    user:
+      name: abhi
+      state: present
+      groups:
+      - networking
+
+  - name: add user Nitin
+    user:
+      name: nitin
+      state: present
+      groups:
+      - engineers
+
