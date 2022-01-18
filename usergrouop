@@ -1,4 +1,3 @@
-
 ---
 - name: add users and groups
   hosts: all
@@ -38,4 +37,3 @@
       - engineers
 
 
-### Script End##
