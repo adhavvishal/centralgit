@@ -1,0 +1,30 @@
+---
+- name: Installation of nagios
+  hosts: mysql
+  user: root
+
+  tasks:
+
+  - name: install epel-release
+    command: amazon-linux-extras install epel -y
+
+  - name: Installing nrpe packages
+    command: yum install nrpe nagios-plugins-all nagios-plugins-nrpe htop -y
+
+  - name: Append Nagios server ip in allowed_host
+    command: sed -i s#"allowed_hosts=127.0.0.1,::1"#"allowed_hosts=nagios-server"#g /etc/nagios/nrpe.cfg
+  
+  - name: Append root partition device name
+    shell: sed -i s#"/dev/hda1"#"$(df -h | grep /$ | awk '{print $1}')"#g /etc/nagios/nrpe.cfg 
+
+  - name: Append check_disk
+    command: sed -i s#"check_hda1"#"check_disk"#g /etc/nagios/nrpe.cfg
+
+  - name: Append mysql port in nrpe.cfg
+    shell: echo "command[check_mysql]=/usr/lib64/nagios/plugins/check_tcp -H localhost -p 3306" >> /etc/nagios/nrpe.cfg
+
+  - name: Restart nrpe
+    service:
+      name: nrpe
+      state: restarted
+

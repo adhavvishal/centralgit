@@ -1,0 +1,31 @@
+---
+- name: Installation of nagios
+  hosts: nagios
+  user: root
+
+  tasks:
+
+ 
+  - name: Copy file with owner and permissions
+    ansible.builtin.copy:
+      src: /home/ec2-user/host_template.cfg
+      dest: /usr/local/nagios/etc/objects/
+
+  - name: nagios_client defination
+    shell: mv /usr/local/nagios/etc/objects/host_template.cfg /usr/local/nagios/etc/objects/service_def.cfg
+
+
+  - name: Service defination in client cfg file
+    shell: sed -i s#"localhost"#"mysql"#g /usr/local/nagios/etc/objects/service_def.cfg
+
+  - name: Service defination in client cfg file
+    shell: sed -i s#"127.0.0.1"#"service_def"#g /usr/local/nagios/etc/objects/service_def.cfg
+
+  - name: append file host cfg file in nagios
+    shell: echo "cfg_file=/usr/local/nagios/etc/objects/service_def.cfg" >> /usr/local/nagios/etc/nagios.cfg
+
+  - name: Restart nagios
+    service:
+      name: nagios
+      state: restarted
+
