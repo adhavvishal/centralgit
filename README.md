@@ -2,7 +2,8 @@
 >Ansible role to install Nagios Server on Centos 7
 
 
-## Tested on Centos7
+## Tested on 
+Centos7
 
 ## Tasks in the role 
 The role contains tasks to:
@@ -111,4 +112,4 @@ $ vim nagios.yml
 ```
 ## Running playbook 
 ```
-ansible-playbook nagios.yml
+ansible-playbook all nagios.yml
